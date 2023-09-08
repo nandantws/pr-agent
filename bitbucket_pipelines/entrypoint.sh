@@ -1,2 +1,2 @@
 #!/bin/bash
-python /app/pr_agent/servers/bitbucket_app.py
+python /app/pr_agent/servers/bitbucket_pipeline_runner.py
