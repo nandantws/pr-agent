@@ -87,7 +87,7 @@ polling_interval_seconds = 30
 # review_path= "path/to/review.md"
 
 [openai]
-key = "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"  # Acquire through https://platform.openai.com
+key = "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"  # Acquire through https://platform.openai.com
 #org = "<ORGANIZATION>"  # Optional, may be commented out.
 # Uncomment the following for Azure OpenAI
 #api_type = "azure"
