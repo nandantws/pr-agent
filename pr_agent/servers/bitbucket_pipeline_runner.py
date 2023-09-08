@@ -12,3 +12,6 @@ async def run_action():
             print(f"PR URL: {pr_url}")
             await PRReviewer(pr_url).run()
 
+if __name__ == "__main__":
+    asyncio.run(run_action())
+
