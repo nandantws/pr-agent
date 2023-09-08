@@ -18,6 +18,7 @@ _GIT_PROVIDERS = {
 def get_git_provider():
     try:
         provider_id = get_settings().config.git_provider
+        print(provider_id, '====================================gg')
     except AttributeError as e:
         raise ValueError("git_provider is a required attribute in the configuration file") from e
     if provider_id not in _GIT_PROVIDERS:
