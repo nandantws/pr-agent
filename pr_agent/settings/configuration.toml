@@ -1,7 +1,7 @@
 [config]
 model="gpt-4"
 fallback_models=["gpt-3.5-turbo-16k"]
-git_provider="github"
+git_provider="bitbucket"
 publish_output=true
 publish_output_progress=true
 verbosity_level=0 # 0,1,2
@@ -85,3 +85,17 @@ polling_interval_seconds = 30
 # LocalGitProvider settings - uncomment to use paths other than default
 # description_path= "path/to/description.md"
 # review_path= "path/to/review.md"
+
+[openai]
+key = "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"  # Acquire through https://platform.openai.com
+#org = "<ORGANIZATION>"  # Optional, may be commented out.
+# Uncomment the following for Azure OpenAI
+#api_type = "azure"
+#api_version = '2023-05-15'  # Check Azure documentation for the current API version
+#api_base = ""  # The base URL for your Azure OpenAI resource. e.g. "https://<your resource name>.openai.azure.com"
+#deployment_id = ""  # The deployment name you chose when you deployed the engine
+#fallback_deployments = []  # For each fallback model specified in configuration.toml in the [config] section, specify the appropriate deployment_id
+
+[bitbucket]
+# Bitbucket personal bearer token
+bearer_token = "ZEKlvynKh159s2VBMSZG8RFc2aBy09k7jtRB3z5pEuM__kJiTPk8sHmMdl1cYPlG-UmqxpchQ9EWRWWWGL121vRb2JFb1Sh78moBefMAEeETEzclf9vH826RN01ez5M="

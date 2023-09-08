@@ -6,6 +6,7 @@ for key, value in os.environ.items():
     print(f"{key}: {value}==================")
     print('PR ID found')
     pr_url = f"https://bitbucket.org/tejinder22/blog/pull-requests/11"
-    print(f"PR URL: {pr_url}")
-    PRReviewer(pr_url).run()
+    if  "BITBUCKET_PR_ID" in key:
+        print(f"PR URL: {pr_url}")
+        PRReviewer(pr_url).run()
 
