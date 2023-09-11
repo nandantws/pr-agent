@@ -87,7 +87,7 @@ polling_interval_seconds = 30
 # review_path= "path/to/review.md"
 
 [openai]
-key = "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"  # Acquire through https://platform.openai.com
+key = ""  # Acquire through https://platform.openai.com
 #org = "<ORGANIZATION>"  # Optional, may be commented out.
 # Uncomment the following for Azure OpenAI
 #api_type = "azure"
@@ -98,4 +98,4 @@ key = "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"  # Acquire through h
 
 [bitbucket]
 # Bitbucket personal bearer token
-bearer_token = ""
+bearer_token = "V7w1WLUjFIoTQYijE7qgaUArjl75tHSJwCkiqNjCnHVKJCZ6J3r0UUjSP5OYrzTedjT4oXVX4BSWZoiEpdMBXFg8ACpt8wrgAm9zZqGgPiKYMi46E-QtVhHtIFh3PCE="
