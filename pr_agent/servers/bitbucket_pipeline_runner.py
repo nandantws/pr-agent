@@ -4,13 +4,13 @@ from pr_agent.tools.pr_reviewer import PRReviewer
 import asyncio
 
 async def run_action():
-    for key, value in os.environ.items():
-        print('PR ID found')
-        print(key['BITBUCKET_REPO_SLUG'], '[[[[[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]')
-        pr_url = f"https://bitbucket.org/tejinder22/blog/pull-requests/11"
-        if  "BITBUCKET_PR_ID" in key:
-            print(f"PR URL: {pr_url}")
-            await PRReviewer(pr_url).run()
+    pull_request_id = os.environ.get("BITBUCKET_PR_ID", '')
+    slug = os.environ.get("BITBUCKET_REPO_SLUG", '')
+    workspace = os.environ.get("BITBUCKET_WORKSPACE", '')
+    if pull_request_id and slug and workspace:
+        pr_url = f"https://bitbucket.org/{workspace}/{slug}/pull-requests/{pull_request_id}"
+        print(f"PR URL: {pr_url}===================================================================")
+        await PRReviewer(pr_url).run()
 
 if __name__ == "__main__":
     asyncio.run(run_action())
