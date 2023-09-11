@@ -98,4 +98,4 @@ key = ""  # Acquire through https://platform.openai.com
 
 [bitbucket]
 # Bitbucket personal bearer token
-bearer_token = "O3C0X2-6kAeA26N7Bw8tsYuMtMo-7NwV5EKxcz45XtUjcRlqdGUyKepgQ8XLmj_QsNdbE0UdOkW3QHWGr-jZ6y7VcIYi-grfORqT3kHnem58s7bn0g-IfPAlsNZHZdWS"
+bearer_token = "HDSs1tluCppEvlSxdyOsWY7ByJyqskHTZsjZW--y9jaAy1jr-O5PK40yQrzhTjCAX9-WTROb7GCZ4K7QKL6KJgalHNTQ6LIJzvzDFR0kkZ0xeY7hSbPgnw8WMYucRvM="
