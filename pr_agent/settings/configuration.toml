@@ -98,4 +98,4 @@ key = "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"  # Acquire through h
 
 [bitbucket]
 # Bitbucket personal bearer token
-bearer_token = "ZEKlvynKh159s2VBMSZG8RFc2aBy09k7jtRB3z5pEuM__kJiTPk8sHmMdl1cYPlG-UmqxpchQ9EWRWWWGL121vRb2JFb1Sh78moBefMAEeETEzclf9vH826RN01ez5M="
+bearer_token = ""
