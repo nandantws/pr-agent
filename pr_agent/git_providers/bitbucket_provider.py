@@ -15,7 +15,7 @@ class BitbucketProvider(GitProvider):
     def __init__(
         self, pr_url: Optional[str] = None, incremental: Optional[bool] = False, env_vars:Optional[list]=None
     ):
-        print(self.env_vars, '=-=-=-=-=-d-=-=-=')
+        print(env_vars, '=-=-=-=-=-d-=-=-=', env_vars)
         s = requests.Session()
         try:
             print(context, "===============================d")
