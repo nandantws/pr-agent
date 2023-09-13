@@ -20,7 +20,7 @@ class BitbucketProvider(GitProvider):
             print(context, "===============================d")
             bearer = context.get("bitbucket_bearer_token", None)
             print(f"bearer: {bearer}===============================")
-            s.headers["Authorization"] = f"Bearer {bearer}"
+            s.headers["Authorization"] = f"Bearer u6FqESpprjHSCT-5x0GutmjGDcfC907zEccIguZ9EqIla_tfnTrwXSlKuMXJRiTG5S6KFrvZOTNUM_FWXL2LLeY_LY4jNr-lzVeOqkgNsfP0PFMrFajcmuyX8O6B2XdeaVR4IsFDzdToIG4Fz5G1HrXzMcZL"
         except Exception:
             s.headers[
                 "Authorization"
