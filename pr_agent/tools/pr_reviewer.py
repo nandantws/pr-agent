@@ -23,7 +23,7 @@ class PRReviewer:
     """
     The PRReviewer class is responsible for reviewing a pull request and generating feedback using an AI model.
     """
-    def __init__(self, pr_url: str, is_answer: bool = False, is_auto: bool = False, args: list = None):
+    def __init__(self, pr_url: str, is_answer: bool = False, is_auto: bool = False, args: list = None, env_vars : list=None):
         """
         Initialize the PRReviewer object with the necessary attributes and objects to review a pull request.
 
@@ -41,6 +41,7 @@ class PRReviewer:
         self.pr_url = pr_url
         self.is_answer = is_answer
         self.is_auto = is_auto
+        self.env_vars = env_vars
 
         if self.is_answer and not self.git_provider.is_supported("get_issue_comments"):
             raise Exception(f"Answer mode is not supported for {get_settings().config.git_provider} for now")
