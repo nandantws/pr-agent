@@ -1,4 +1,3 @@
-import os
 import json
 import logging
 from typing import Optional, Tuple
@@ -18,10 +17,11 @@ class BitbucketProvider(GitProvider):
     ):
         s = requests.Session()
         try:
-            bearer_token = os.environ.get('BITBUCKET_BEARER_TOKEN', None)
-            bearer = context.get("bitbucket_bearer_token", None)
-            print(f"bearer: {bearer_token}=========================== hh===={bearer}")
-            s.headers["Authorization"] = f"Bearer {bearer_token}"
+            print(context, "===============================d")
+            # bearer = context.get("bitbucket_bearer_token", None)
+            bearer = "uXtBCvgJnm45aVtTxOb4nphvi6WzklK8-XpLlHIsokEZ6PW0bbalcBTNRFPCvJbeV7is77M8s9Urk-CYMQ7Snoa997eprGMR6kzMnEFlBOt2IfPj8tA57jna83Ncg_uOwiZnX7jC7--033ZV9cfEG5OpqS0A"
+            print(f"bearer: {bearer}===============================")
+            s.headers["Authorization"] = f"Bearer {bearer}"
         except Exception:
             s.headers[
                 "Authorization"
