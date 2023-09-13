@@ -7,12 +7,10 @@ async def run_action():
     pull_request_id = os.environ.get("BITBUCKET_PR_ID", '')
     slug = os.environ.get("BITBUCKET_REPO_SLUG", '')
     workspace = os.environ.get("BITBUCKET_WORKSPACE", '')
-    bearer_token = os.environ.get('BITBUCKET_BEARER_TOKEN', None)
-    print(bearer_token, '===========-=-=-=-=-=-=')
+    oauth_token = os.environ.get('BITBUCKET_BEARER_TOKEN', None)
     if pull_request_id and slug and workspace:
         pr_url = f"https://bitbucket.org/{workspace}/{slug}/pull-requests/{pull_request_id}"
-        print(f"PR URL: {pr_url}===================================================================")
-        await PRReviewer(pr_url, env_vars=[bearer_token]).run()
+        await PRReviewer(pr_url, oauth_token=oauth_token).run()
 
 if __name__ == "__main__":
     asyncio.run(run_action())
