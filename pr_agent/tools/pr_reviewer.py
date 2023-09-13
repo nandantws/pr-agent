@@ -34,14 +34,13 @@ class PRReviewer:
         """
         self.parse_args(args) # -i command
 
-        self.git_provider = get_git_provider()(pr_url, incremental=self.incremental)
+        self.git_provider = get_git_provider()(pr_url, incremental=self.incremental, env_vars=env_vars)
         self.main_language = get_main_pr_language(
             self.git_provider.get_languages(), self.git_provider.get_files()
         )
         self.pr_url = pr_url
         self.is_answer = is_answer
         self.is_auto = is_auto
-        self.env_vars = env_vars
 
         if self.is_answer and not self.git_provider.is_supported("get_issue_comments"):
             raise Exception(f"Answer mode is not supported for {get_settings().config.git_provider} for now")
