@@ -14,7 +14,6 @@ from .git_provider import FilePatchInfo, GitProvider
 class BitbucketProvider(GitProvider):
     def __init__(
         self, pr_url: Optional[str] = None, incremental: Optional[bool] = False):
-        print(context, '=-=-=-=-=-=-d-=-=-d=-s=-=-=sd-=-=-=')
         s = requests.Session()
         try:
             bearer = context.get("bitbucket_bearer_token", None)
