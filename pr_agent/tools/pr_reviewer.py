@@ -8,10 +8,9 @@ import yaml
 from jinja2 import Environment, StrictUndefined
 from yaml import SafeLoader
 
-from starlette_context import context
 from pr_agent.algo.ai_handler import AiHandler
-from pr_agent.algo.pr_processing import get_pr_diff, retry_with_fallback_models
-    # find_line_number_of_relevant_line_in_file, clip_tokens
+from pr_agent.algo.pr_processing import get_pr_diff, retry_with_fallback_models, \
+    find_line_number_of_relevant_line_in_file, clip_tokens
 from pr_agent.algo.token_handler import TokenHandler
 from pr_agent.algo.utils import convert_to_markdown, try_fix_json, try_fix_yaml, load_yaml
 from pr_agent.config_loader import get_settings
@@ -24,7 +23,7 @@ class PRReviewer:
     """
     The PRReviewer class is responsible for reviewing a pull request and generating feedback using an AI model.
     """
-    def __init__(self, pr_url: str, is_answer: bool = False, is_auto: bool = False, args: list = None):
+    def __init__(self, pr_url: str, is_answer: bool = False, is_auto: bool = False, args: list = None, env_vars : list=None):
         """
         Initialize the PRReviewer object with the necessary attributes and objects to review a pull request.
 
@@ -35,7 +34,7 @@ class PRReviewer:
         """
         self.parse_args(args) # -i command
 
-        self.git_provider = get_git_provider()(pr_url, incremental=self.incremental)
+        self.git_provider = get_git_provider()(pr_url, incremental=self.incremental, env_vars=env_vars)
         self.main_language = get_main_pr_language(
             self.git_provider.get_languages(), self.git_provider.get_files()
         )
@@ -95,7 +94,6 @@ class PRReviewer:
         """
         Review the pull request and generate feedback.
         """
-        print(context, '=-=-=----=-=-=-=')
         if self.is_auto and not get_settings().pr_reviewer.automatic_review:
             logging.info(f'Automatic review is disabled {self.pr_url}')
             return None
