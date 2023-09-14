@@ -18,7 +18,7 @@ class BitbucketProvider(GitProvider):
         s = requests.Session()
         try:
             bearer = context.get("bitbucket_bearer_token", None)
-            s.headers["Authorization"] = f"Bearer {bearer}"
+            s.headers["Authorization"] = f"Bearer nDmK2Rq9Ge1NzfslWljM96ghsBb-Xs4LMS3-hKCDcdyxUp_H3nYRR-Py-F3anKbz66I7f9thmV_lx0dn5e22DfzzsPaJC1a4mZ2Z2Y3Al5Tttr8p2IkVl-uVFnX6KTlsHwSXJig6eLQEISFu5GSz23iqvQ=="
         except Exception:
             s.headers[
                 "Authorization"
