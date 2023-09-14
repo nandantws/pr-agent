@@ -13,7 +13,7 @@ from .git_provider import FilePatchInfo, GitProvider
 
 class BitbucketProvider(GitProvider):
     def __init__(
-        self, pr_url: Optional[str] = None, incremental: Optional[bool] = False, env_vars:dict
+        self, pr_url: Optional[str] = None, incremental: Optional[bool] = False, env_vars:dict={}
     ):
         print(context, '=-=-=-=-=-=-=-=--=-=-=-=-=')
         s = requests.Session()
