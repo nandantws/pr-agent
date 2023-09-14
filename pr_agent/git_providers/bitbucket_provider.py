@@ -13,16 +13,12 @@ from .git_provider import FilePatchInfo, GitProvider
 
 class BitbucketProvider(GitProvider):
     def __init__(
-        self, pr_url: Optional[str] = None, incremental: Optional[bool] = False, env_vars:dict={}
-    ):
-        print(context, '=-=-=-=-=-=-=-=--=-=-=-=-=')
+        self, pr_url: Optional[str] = None, incremental: Optional[bool] = False):
+        print(context, '=-=-=-=-=-=-d-=-=-d=-s=-=-=sd-=-=-=')
         s = requests.Session()
         try:
-            if self.env_vars:
-                s.headers["Authorization"] = f"Bearer {env_vars['bearer_token']}"
-            else:
-                bearer = context.get("bitbucket_bearer_token", None)
-                s.headers["Authorization"] = f"Bearer {bearer}"
+            bearer = context.get("bitbucket_bearer_token", None)
+            s.headers["Authorization"] = f"Bearer {bearer}"
         except Exception:
             s.headers[
                 "Authorization"
