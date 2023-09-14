@@ -8,6 +8,7 @@ import yaml
 from jinja2 import Environment, StrictUndefined
 from yaml import SafeLoader
 
+from starlette_context import context
 from pr_agent.algo.ai_handler import AiHandler
 from pr_agent.algo.pr_processing import get_pr_diff, retry_with_fallback_models, \
     find_line_number_of_relevant_line_in_file, clip_tokens
@@ -94,6 +95,7 @@ class PRReviewer:
         """
         Review the pull request and generate feedback.
         """
+        print(context, '=-=-=----=-=-=-=')
         if self.is_auto and not get_settings().pr_reviewer.automatic_review:
             logging.info(f'Automatic review is disabled {self.pr_url}')
             return None
