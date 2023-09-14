@@ -23,7 +23,7 @@ class PRReviewer:
     """
     The PRReviewer class is responsible for reviewing a pull request and generating feedback using an AI model.
     """
-    def __init__(self, pr_url: str, is_answer: bool = False, is_auto: bool = False, args: list = None, env_vars : list=None):
+    def __init__(self, pr_url: str, is_answer: bool = False, is_auto: bool = False, args: list = None, env_vars : dict={}):
         """
         Initialize the PRReviewer object with the necessary attributes and objects to review a pull request.
 
