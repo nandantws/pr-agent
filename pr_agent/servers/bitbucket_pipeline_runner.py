@@ -4,6 +4,7 @@ from pr_agent.tools.pr_reviewer import PRReviewer
 import asyncio
 
 async def run_action():
+    print("================================================")
     pull_request_id = os.environ.get("BITBUCKET_PR_ID", '')
     slug = os.environ.get("BITBUCKET_REPO_SLUG", '')
     workspace = os.environ.get("BITBUCKET_WORKSPACE", '')
