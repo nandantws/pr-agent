@@ -14,26 +14,14 @@ from .git_provider import FilePatchInfo, GitProvider
 class BitbucketProvider(GitProvider):
     def __init__(
         self, pr_url: Optional[str] = None, incremental: Optional[bool] = False):
-        print(context.__dict__, '=-=-=-=-f-d-=-=')
-        # self.env_vars = env_vars
         s = requests.Session()
         try:
-            print('===============f=============w')
             bearer = context.get("bitbucket_bearer_token", None)
             s.headers["Authorization"] = f"Bearer {bearer}"
-            print(s.headers["Authorization"], 'llllllllllllllllllllllllllll')
-            # print(bearer, '=-=-=-=d')
-            # if self.env_vars != None:
-            #     s.headers["Authorization"] = f"Bearer {self.env_vars[0]}"
-            # else:
-            #     bearer = context.get("bitbucket_bearer_token", None)
-            #     s.headers["Authorization"] = f"Bearer {bearer}"
         except Exception:
-            print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
             s.headers[
                 "Authorization"
             ] = f'Bearer {get_settings().get("BITBUCKET.BEARER_TOKEN", None)}'
-            print(s.headers["Authorization"], 'jjjjjjjjjjjjjjjjjjjjjjjjjj')
         s.headers["Content-Type"] = "application/json"
         self.headers = s.headers
         self.bitbucket_client = Cloud(session=s)
