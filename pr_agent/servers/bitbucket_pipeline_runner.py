@@ -9,7 +9,7 @@ async def run_action():
     slug = os.environ.get("BITBUCKET_REPO_SLUG", '')
     workspace = os.environ.get("BITBUCKET_WORKSPACE", '')
     bearer_token = os.environ.get('BITBUCKET_BEARER_TOKEN', None)
-    OPENAI_KEY = os.environ.get('OPENAI_KEY') or os.environ.get('OPENAI.KEY')
+    OPENAI_KEY = os.environ.get('OPENAI_API_KEY') or os.environ.get('OPENAI.KEY')
     OPENAI_ORG = os.environ.get('OPENAI_ORG') or os.environ.get('OPENAI.ORG')
 
     # Check if required environment variables are set
