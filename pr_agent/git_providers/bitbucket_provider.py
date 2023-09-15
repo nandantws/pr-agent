@@ -19,11 +19,13 @@ class BitbucketProvider(GitProvider):
         self.env_vars = env_vars
         s = requests.Session()
         try:
-            # if self.env_vars != None:
-            #     s.headers["Authorization"] = f"Bearer {self.env_vars[0]}"
-            # else:
             bearer = context.get("bitbucket_bearer_token", None)
-            s.headers["Authorization"] = f"Bearer {bearer}"
+            print(bearer, '=-=-=-=d')
+            if self.env_vars != None:
+                s.headers["Authorization"] = f"Bearer {self.env_vars[0]}"
+            else:
+                bearer = context.get("bitbucket_bearer_token", None)
+                s.headers["Authorization"] = f"Bearer {bearer}"
         except Exception:
             s.headers[
                 "Authorization"
