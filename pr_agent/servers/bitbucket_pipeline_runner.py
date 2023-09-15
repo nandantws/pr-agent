@@ -21,7 +21,7 @@ async def run_action():
 
     if pull_request_id and slug and workspace:
         pr_url = f"https://bitbucket.org/{workspace}/{slug}/pull-requests/{pull_request_id}"
-        await PRReviewer(pr_url, env_vars=[bearer_token]).run()
+        await PRReviewer(pr_url).run()
 
 if __name__ == "__main__":
     asyncio.run(run_action())
