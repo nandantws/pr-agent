@@ -10,14 +10,15 @@ use_repo_settings_file=true
 ai_timeout=180
 max_description_tokens = 500
 max_commits_tokens = 500
-litellm_debugger=false
 secret_provider="google_cloud_storage"
+cli_mode=false
 
 [pr_reviewer] # /review #
 require_focused_review=false
 require_score_review=false
 require_tests_review=true
 require_security_review=true
+require_estimate_effort_to_review=true
 num_code_suggestions=4
 inline_code_comments = false
 ask_and_reflect=false
@@ -25,10 +26,14 @@ automatic_review=true
 extra_instructions = ""
 
 [pr_description] # /describe #
+publish_labels=true
 publish_description_as_comment=false
 add_original_user_description=false
 keep_original_user_title=false
 extra_instructions = ""
+# markers
+use_description_markers=false
+include_generated_by_header=true
 
 [pr_questions] # /ask #
 
@@ -86,16 +91,25 @@ polling_interval_seconds = 30
 # description_path= "path/to/description.md"
 # review_path= "path/to/review.md"
 
-[openai]
-key = ""  # Acquire through https://platform.openai.com
-#org = "<ORGANIZATION>"  # Optional, may be commented out.
-# Uncomment the following for Azure OpenAI
-#api_type = "azure"
-#api_version = '2023-05-15'  # Check Azure documentation for the current API version
-#api_base = ""  # The base URL for your Azure OpenAI resource. e.g. "https://<your resource name>.openai.azure.com"
-#deployment_id = ""  # The deployment name you chose when you deployed the engine
-#fallback_deployments = []  # For each fallback model specified in configuration.toml in the [config] section, specify the appropriate deployment_id
+[gerrit]
+# endpoint to the gerrit service
+# url = "ssh://gerrit.example.com:29418"
+# user for gerrit authentication
+# user = "ai-reviewer"
+# patch server where patches will be saved
+# patch_server_endpoint = "http://127.0.0.1:5000/patch"
+# token to authenticate in the patch server
+# patch_server_token = ""
 
-[bitbucket]
-# Bitbucket personal bearer token
-bearer_token = ""
+[litellm]
+#use_client = false
+
+[pr_similar_issue]
+skip_comments = false
+force_update_dataset = false
+max_issues_to_scan = 500
+
+[pinecone]
+# fill and place in .secrets.toml
+#api_key = ...
+# environment = "gcp-starter"
