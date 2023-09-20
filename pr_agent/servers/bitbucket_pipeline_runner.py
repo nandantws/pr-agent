@@ -5,13 +5,14 @@ from pr_agent.tools.pr_reviewer import PRReviewer
 import asyncio
 
 async def run_action():
+    print('============================================')
     pull_request_id = os.environ.get("BITBUCKET_PR_ID", '')
     slug = os.environ.get("BITBUCKET_REPO_SLUG", '')
     workspace = os.environ.get("BITBUCKET_WORKSPACE", '')
     bearer_token = os.environ.get('BITBUCKET_BEARER_TOKEN', None)
     OPENAI_KEY = os.environ.get('OPENAI_API_KEY') or os.environ.get('OPENAI.KEY')
     OPENAI_ORG = os.environ.get('OPENAI_ORG') or os.environ.get('OPENAI.ORG')
-
+    print(OPENAI_KEY, '=============================----', bearer_token)
     # Check if required environment variables are set
     if not bearer_token:
         print("BITBUCKET_BEARER_TOKEN not set")
