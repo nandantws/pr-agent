@@ -14,11 +14,25 @@ async def run_action():
     OPENAI_ORG = os.environ.get('OPENAI_ORG') or os.environ.get('OPENAI.ORG')
     print(OPENAI_KEY, '=============================----', bearer_token)
     # Check if required environment variables are set
+    if not pull_request_id:
+        print("pull_request_id not set")
+        return
+    
+    if not slug:
+        print("slug not set")
+        return
+    
+    if not workspace:
+        print("workspace not set")
+        return
+    
     if not bearer_token:
         print("BITBUCKET_BEARER_TOKEN not set")
+        return
     
     if not OPENAI_KEY:
         print("OPENAI_KEY not set")
+
 
     # Set the environment variables in the settings
     get_settings().set("BITBUCKET.BEARER_TOKEN", bearer_token)
