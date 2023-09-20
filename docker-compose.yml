@@ -7,14 +7,12 @@ services:
     ports:
       - "8080:80"
     environment:
-      - BITBUCKET_BRANCH=${BITBUCKET_BRANCH}
-      - BITBUCKET_BUILD_NUMBER=${BITBUCKET_BUILD_NUMBER}
-      # ... (other Bitbucket environment variables)
-      - GITHUB_EVENT_PATH=/github/workflow/event.json  # Use this path in the container
+      # ... other environment variables
+      - GITHUB_EVENT_PATH=/app/event.json  # Correct path in the container
       - GITHUB_EVENT_NAME=${GITHUB_EVENT_NAME}
       - OPENAI_KEY=${OPENAI_KEY}
       - OPENAI_ORG=${OPENAI_ORG}
       - GITHUB_TOKEN=${GITHUB_TOKEN}
     volumes:
-      - ./github/workflow:/github/workflow  # Mount the event payload as a volume
+      - ./github/workflow:/app  # Mount the event payload as a volume
 
