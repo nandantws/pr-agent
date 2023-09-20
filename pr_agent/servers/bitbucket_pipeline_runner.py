@@ -25,8 +25,9 @@ async def run_action():
     get_settings().set("OPENAI.KEY", OPENAI_KEY)
     if OPENAI_ORG:
         get_settings().set("OPENAI.ORG", OPENAI_ORG)
-
+    print(pull_request_id, '=-=-=-=-=-=-=', slug, '=-=-=--=-=-=-=-=-=d', workspace)
     if pull_request_id and slug and workspace:
+        print('=-=-=-=-=-=-=-=-=-')
         pr_url = f"https://bitbucket.org/{workspace}/{slug}/pull-requests/{pull_request_id}"
         await PRReviewer(pr_url).run()
 
