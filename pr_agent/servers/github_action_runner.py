@@ -1,14 +1,20 @@
 import asyncio
+import logging
+import sys
 import json
 import os
 
 from pr_agent.agent.pr_agent import PRAgent
 from pr_agent.config_loader import get_settings
 from pr_agent.git_providers import get_git_provider
+from pr_agent.algo.utils import update_settings_from_args
 from pr_agent.tools.pr_reviewer import PRReviewer
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 
 async def run_action():
+    agent = PRAgent()
     # Get environment variables
     GITHUB_EVENT_NAME = os.environ.get('GITHUB_EVENT_NAME')
     GITHUB_EVENT_PATH = os.environ.get('GITHUB_EVENT_PATH')
@@ -50,10 +56,24 @@ async def run_action():
     # Handle pull request event
     if GITHUB_EVENT_NAME == "pull_request":
         action = event_payload.get("action")
-        if action in ["opened", "reopened"]:
-            pr_url = event_payload.get("pull_request", {}).get("url")
-            if pr_url:
-                await PRReviewer(pr_url).run()
+        if not action:
+            return {}
+        if action in get_settings().github_actions.handle_pr_actions:
+            print('======================================================fdf')
+            # pr_url = event_payload.get("pull_request", {}).get("url")
+            # if pr_url:
+            #     await PRReviewer(pr_url).run()
+            api_url = event_payload.get("pull_request", {}).get("url")
+            logging.info(f"Performing review because of event={GITHUB_EVENT_NAME} and action={action}")
+            for command in get_settings().github_actions.pr_commands:
+                split_command = command.split(" ")
+                command = split_command[0]
+                args = split_command[1:]
+                other_args = update_settings_from_args(args)
+                new_command = ' '.join([command] + other_args)
+                # logging.info(body)
+                logging.info(f"Performing command: {new_command}")
+                await agent.handle_request(api_url, new_command)
 
     # Handle issue comment event
     elif GITHUB_EVENT_NAME == "issue_comment":
