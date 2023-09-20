@@ -1,5 +1,9 @@
 FROM python:3.10 as base
 
+ENV OPENAI_API_KEY=${OPENAI_API_KEY} \
+    BITBUCKET_BEARER_TOKEN=${BITBUCKET_BEARER_TOKEN}
+
+
 WORKDIR /app
 ADD pyproject.toml .
 ADD requirements.txt .
