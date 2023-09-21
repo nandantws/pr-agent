@@ -58,14 +58,17 @@ async def run_action():
         action = event_payload.get("action")
         if not action:
             return {}
-        if action in get_settings().github_actions.handle_pr_actions:
+        if action in ['opened', 'reopened', 'ready_for_review', 'review_requested']:
             print('======================================================fdf')
             # pr_url = event_payload.get("pull_request", {}).get("url")
             # if pr_url:
             #     await PRReviewer(pr_url).run()
             api_url = event_payload.get("pull_request", {}).get("url")
             logging.info(f"Performing review because of event={GITHUB_EVENT_NAME} and action={action}")
-            for command in get_settings().github_actions.pr_commands:
+            for command in [
+    "/describe --pr_description.add_original_user_description=true --pr_description.keep_original_user_title=true",
+    "/auto_review",
+]:
                 split_command = command.split(" ")
                 command = split_command[0]
                 args = split_command[1:]
