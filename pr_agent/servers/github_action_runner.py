@@ -62,12 +62,15 @@ async def run_action():
             if pr_url:
                 auto_review = os.environ.get('github_action.auto_review', None)
                 if auto_review is None or (isinstance(auto_review, str) and auto_review.lower() == 'true'):
+                    print('=============================')
                     await PRReviewer(pr_url).run()
                 auto_describe = os.environ.get('github_action.auto_describe', None)
                 if isinstance(auto_describe, str) and auto_describe.lower() == 'true':
+                    print('kkkkkkkkkkkkkkkkkkkkk')
                     await PRDescription(pr_url).run()
                 auto_improve = os.environ.get('github_action.auto_improve', None)
                 if isinstance(auto_improve, str) and auto_improve.lower() == 'true':
+                    print('dddddddddddddddddddddd')
                     await PRCodeSuggestions(pr_url).run()
 
     # Handle issue comment event
