@@ -76,7 +76,8 @@ async def run_action():
                 #     print('dddddddddddddddddddddd')
                 #     await PRCodeSuggestions(pr_url).run()
         print('======================dddd=======')
-        print(get_settings().github_actions.handle_pr_actions, 'popopopopsopopoposopoposopsopo')
+        print(get_settings(), 'llllllllllllllllllll')
+        print(get_settings().github_actions, 'popopopopsopopoposopoposopsopo')
         if action in get_settings().github_actions.handle_pr_actions:
             pr_url = event_payload.get("pull_request", {}).get("url")
             print(action, '=-=-=-=-=-=-=-action')
