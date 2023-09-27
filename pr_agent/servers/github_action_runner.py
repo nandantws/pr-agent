@@ -18,6 +18,7 @@ async def run_action():
     OPENAI_ORG = os.environ.get('OPENAI_ORG') or os.environ.get('OPENAI.ORG')
     GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
     get_settings().set("CONFIG.PUBLISH_OUTPUT_PROGRESS", False)
+    print(GITHUB_EVENT_NAME, '=-=-s', GITHUB_EVENT_PATH, '=-=-=-d')
 
 
     # Check if required environment variables are set
