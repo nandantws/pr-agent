@@ -57,12 +57,12 @@ async def run_action():
     if GITHUB_EVENT_NAME == "pull_request":
         print(event_payload, '=-=-=-=-==-=-=event_payload')
         action = event_payload.get("action")
-        print(action, '=-=-=-=-=-=action')
-        if action in ["opened", "reopened"]:
-            print('pppppppppppppppppppppppppp')
-            pr_url = event_payload.get("pull_request", {}).get("url")
-            print(pr_url, '=-=-=-=-=-=pr_url')
-            if pr_url:
+        # print(action, '=-=-=-=-=-=action')
+        # if action in ["opened", "reopened"]:
+        #     print('pppppppppppppppppppppppppp')
+        #     pr_url = event_payload.get("pull_request", {}).get("url")
+        #     print(pr_url, '=-=-=-=-=-=pr_url')
+        #     if pr_url:
                 # auto_review = os.environ.get('github_action.auto_review', None)
                 # if auto_review is None or (isinstance(auto_review, str) and auto_review.lower() == 'true'):
                 #     print('=============================')
@@ -75,20 +75,21 @@ async def run_action():
                 # if isinstance(auto_improve, str) and auto_improve.lower() == 'true':
                 #     print('dddddddddddddddddddddd')
                 #     await PRCodeSuggestions(pr_url).run()
-                print('======================dddd=======')
-                if action in get_settings().github_actions.handle_pr_actions:
-                    print(action, '=-=-=-=-=-=-=-action')
-                    logging.info(f"Performing review because of event={GITHUB_EVENT_NAME} and action={action}")
-                    for command in get_settings().github_app.pr_commands:
-                        print(command, '=-=-=-=-=-=-=-command')
-                        split_command = command.split(" ")
-                        command = split_command[0]
-                        args = split_command[1:]
-                        other_args = update_settings_from_args(args)
-                        new_command = ' '.join([command] + other_args)
-                        logging.info(body)
-                        logging.info(f"Performing command: {new_command}")
-                        await agent.handle_request(pr_url, new_command)
+        print('======================dddd=======')
+        if action in get_settings().github_actions.handle_pr_actions:
+            pr_url = event_payload.get("pull_request", {}).get("url")
+            print(action, '=-=-=-=-=-=-=-action')
+            logging.info(f"Performing review because of event={GITHUB_EVENT_NAME} and action={action}")
+            for command in get_settings().github_app.pr_commands:
+                print(command, '=-=-=-=-=-=-=-command')
+                split_command = command.split(" ")
+                command = split_command[0]
+                args = split_command[1:]
+                other_args = update_settings_from_args(args)
+                new_command = ' '.join([command] + other_args)
+                logging.info(body)
+                logging.info(f"Performing command: {new_command}")
+                await agent.handle_request(pr_url, new_command)
 
     # Handle issue comment event
     elif GITHUB_EVENT_NAME == "issue_comment":
