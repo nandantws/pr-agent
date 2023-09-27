@@ -21,6 +21,7 @@ async def run_action():
     OPENAI_ORG = os.environ.get('OPENAI_ORG') or os.environ.get('OPENAI.ORG')
     GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
     get_settings().set("CONFIG.PUBLISH_OUTPUT_PROGRESS", False)
+    print(GITHUB_EVENT_NAME,'=-=--=-=-=', GITHUB_EVENT_PATH, '=-=-=-=-=-=-=d', OPENAI_KEY, '=-=-=-=g-=-', GITHUB_TOKEN)
 
 
     # Check if required environment variables are set
@@ -54,6 +55,7 @@ async def run_action():
 
     # Handle pull request event
     if GITHUB_EVENT_NAME == "pull_request":
+        print('===========================================')
         action = event_payload.get("action")
         if action in ["opened", "reopened"]:
             pr_url = event_payload.get("pull_request", {}).get("url")
