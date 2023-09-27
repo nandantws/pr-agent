@@ -1,6 +1,8 @@
 import asyncio
 import json
 import os
+import logging
+import sys
 
 from pr_agent.agent.pr_agent import PRAgent
 from pr_agent.config_loader import get_settings
@@ -8,9 +10,10 @@ from pr_agent.git_providers import get_git_provider
 from pr_agent.tools.pr_code_suggestions import PRCodeSuggestions
 from pr_agent.tools.pr_description import PRDescription
 from pr_agent.tools.pr_reviewer import PRReviewer
-
+from pr_agent.algo.utils import update_settings_from_args
 
 async def run_action():
+    agent = PRAgent()
     # Get environment variables
     GITHUB_EVENT_NAME = os.environ.get('GITHUB_EVENT_NAME')
     GITHUB_EVENT_PATH = os.environ.get('GITHUB_EVENT_PATH')
@@ -60,18 +63,32 @@ async def run_action():
             pr_url = event_payload.get("pull_request", {}).get("url")
             print(pr_url, '=-=-=-=-=-=pr_url')
             if pr_url:
-                auto_review = os.environ.get('github_action.auto_review', None)
-                if auto_review is None or (isinstance(auto_review, str) and auto_review.lower() == 'true'):
-                    print('=============================')
-                    await PRReviewer(pr_url).run()
-                auto_describe = os.environ.get('github_action.auto_describe', None)
-                if isinstance(auto_describe, str) and auto_describe.lower() == 'true':
-                    print('kkkkkkkkkkkkkkkkkkkkk')
-                    await PRDescription(pr_url).run()
-                auto_improve = os.environ.get('github_action.auto_improve', None)
-                if isinstance(auto_improve, str) and auto_improve.lower() == 'true':
-                    print('dddddddddddddddddddddd')
-                    await PRCodeSuggestions(pr_url).run()
+                # auto_review = os.environ.get('github_action.auto_review', None)
+                # if auto_review is None or (isinstance(auto_review, str) and auto_review.lower() == 'true'):
+                #     print('=============================')
+                #     await PRReviewer(pr_url).run()
+                # auto_describe = os.environ.get('github_action.auto_describe', None)
+                # if isinstance(auto_describe, str) and auto_describe.lower() == 'true':
+                #     print('kkkkkkkkkkkkkkkkkkkkk')
+                #     await PRDescription(pr_url).run()
+                # auto_improve = os.environ.get('github_action.auto_improve', None)
+                # if isinstance(auto_improve, str) and auto_improve.lower() == 'true':
+                #     print('dddddddddddddddddddddd')
+                #     await PRCodeSuggestions(pr_url).run()
+                print('======================dddd=======')
+                if action in get_settings().github_actions.handle_pr_actions:
+                    print(action, '=-=-=-=-=-=-=-action')
+                    logging.info(f"Performing review because of event={GITHUB_EVENT_NAME} and action={action}")
+                    for command in get_settings().github_app.pr_commands:
+                        print(command, '=-=-=-=-=-=-=-command')
+                        split_command = command.split(" ")
+                        command = split_command[0]
+                        args = split_command[1:]
+                        other_args = update_settings_from_args(args)
+                        new_command = ' '.join([command] + other_args)
+                        logging.info(body)
+                        logging.info(f"Performing command: {new_command}")
+                        await agent.handle_request(pr_url, new_command)
 
     # Handle issue comment event
     elif GITHUB_EVENT_NAME == "issue_comment":
