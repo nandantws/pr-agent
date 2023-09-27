@@ -79,7 +79,7 @@ async def run_action():
         print(get_settings(), 'llllllllllllllllllll')
         print(get_settings().github_actions, 'popopopopsopopoposopoposopsopo')
         print(get_settings().github_app.handle_pr_actions, '=-=-=-=-==')
-        if action in get_settings().github_actions.handle_pr_actions:
+        if action in get_settings().github_app.handle_pr_actions:
             pr_url = event_payload.get("pull_request", {}).get("url")
             print(action, '=-=-=-=-=-=-=-action')
             logging.info(f"Performing review because of event={GITHUB_EVENT_NAME} and action={action}")
