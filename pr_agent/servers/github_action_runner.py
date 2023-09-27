@@ -90,7 +90,7 @@ async def run_action():
                 args = split_command[1:]
                 other_args = update_settings_from_args(args)
                 new_command = ' '.join([command] + other_args)
-                logging.info(body)
+                # logging.info(body)
                 logging.info(f"Performing command: {new_command}")
                 await agent.handle_request(pr_url, new_command)
 
