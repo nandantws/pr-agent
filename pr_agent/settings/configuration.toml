@@ -59,7 +59,10 @@ deployment_type = "user"
 user_token = ""  # A GitHub personal access token with 'repo' scope.
 ratelimit_retries = 5
 
-[data] 
+[github_action]
+# auto_review = true    # set as env var in .github/workflows/pr-agent.yaml
+# auto_describe = true  # set as env var in .github/workflows/pr-agent.yaml
+# auto_improve = true   # set as env var in .github/workflows/pr-agent.yaml
 # these toggles allows running the github app from custom deployments
 bot_user = "github-actions[bot]"
 override_deployment_type = true
@@ -74,10 +77,6 @@ pr_commands = [
     "/auto_review",
 ]
 
-# [github_action]
-# auto_review = true    # set as env var in .github/workflows/pr-agent.yaml
-# auto_describe = true  # set as env var in .github/workflows/pr-agent.yaml
-# auto_improve = true   # set as env var in .github/workflows/pr-agent.yaml
 
 [github_app]
 # these toggles allows running the github app from custom deployments
