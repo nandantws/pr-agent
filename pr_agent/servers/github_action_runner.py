@@ -81,6 +81,7 @@ async def run_action():
         # asd = get_settings().data.handle_pr_actions
         # print(type(asd), asd)
         print(action, '=-=---=-=-=---action')
+        print(get_settings().github_action, '-=-=-=-=-=-fsffsffsfsf')
         print(get_settings().github_action.handle_pr_actions, '=-=-=-=-=-get_settings().github_actions.handle_pr_actions')
         if action in get_settings().github_action.handle_pr_actions:
             print('============================================')
