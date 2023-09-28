@@ -29,8 +29,10 @@ global_settings = Dynaconf(
 
 def get_settings():
     try:
+        print(context["settings"])
         return context["settings"]
     except Exception:
+        print(global_settings)
         return global_settings
 
 
