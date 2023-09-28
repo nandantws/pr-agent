@@ -76,6 +76,11 @@ async def run_action():
                 #     print('dddddddddddddddddddddd')
                 #     await PRCodeSuggestions(pr_url).run()
         print('kkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+        print(get_settings().data)
+        print('----------------------------------------')
+        print(get_settings().activate_windows.arr)
+        print(get_settings().activate_windows.boo)
+        print('----------------------------------------')
         if action in get_settings().data.handle_pr_actions:
             print('============================================')
             pr_url = event_payload.get("pull_request", {}).get("url")

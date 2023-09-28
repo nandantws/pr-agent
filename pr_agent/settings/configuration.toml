@@ -94,6 +94,10 @@ pr_commands = [
     "/auto_review",
 ]
 
+[activate_window]
+arr = ["a","b","c"]
+boo = true
+
 [gitlab]
 # URL to the gitlab service
 url = "https://gitlab.com"
