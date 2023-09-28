@@ -75,14 +75,9 @@ async def run_action():
                 # if isinstance(auto_improve, str) and auto_improve.lower() == 'true':
                 #     print('dddddddddddddddddddddd')
                 #     await PRCodeSuggestions(pr_url).run()
-        print('======================dddd=======')
-        print(get_settings(), 'llllllllllllllllllll')
-        print(type(get_settings().data), 'popopopopsopopoposopoposopsopo')
-        print(type(get_settings().github_app), '=-=-=-=-==')
-        print(action, '=-=-=-=-=-=-=-action')
-        print(type(get_settings().data.handle_pr_actions), 'popopopopsopopoposopopoeeeeeeeeeeeeesopsopo')
-        print(get_settings().github_app.handle_pr_actions, '-=-==-=-=-=-=-=-=-=-=-==--=')
+        print('kkkkkkkkkkkkkkkkkkkkkkkkkkkk')
         if action in get_settings().github_app.handle_pr_actions:
+            print('============================================')
             pr_url = event_payload.get("pull_request", {}).get("url")
             logging.info(f"Performing review because of event={GITHUB_EVENT_NAME} and action={action}")
             for command in get_settings().github_app.pr_commands:
