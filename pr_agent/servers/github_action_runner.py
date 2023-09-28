@@ -79,6 +79,7 @@ async def run_action():
         print(get_settings(), 'llllllllllllllllllll')
         print(type(get_settings().data), 'popopopopsopopoposopoposopsopo')
         print(type(get_settings().github_app), '=-=-=-=-==')
+        print(get_settings().data.handle_pr_actions, '-=-==-=-=-=-=-=-=-=-=-==--=')
         if action in get_settings().data.handle_pr_actions:
             pr_url = event_payload.get("pull_request", {}).get("url")
             print(action, '=-=-=-=-=-=-=-action')
