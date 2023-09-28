@@ -10,7 +10,7 @@ PR_AGENT_TOML_KEY = 'pr-agent'
 current_dir = dirname(abspath(__file__))
 global_settings = Dynaconf(
     envvar_prefix=False,
-    merge_enabled=True,
+    merge_enabled=False,
     settings_files=[join(current_dir, f) for f in [
         "settings/.secrets.toml",
         "settings/configuration.toml",
@@ -33,6 +33,7 @@ def get_settings():
         return context["settings"]
     except Exception:
         print(global_settings, 'posssssssssssssssssssssssssssssssssssss')
+        print(global_settings.github_action)
         return global_settings
 
 

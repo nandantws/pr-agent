@@ -81,13 +81,13 @@ async def run_action():
         # asd = get_settings().data.handle_pr_actions
         # print(type(asd), asd)
         print(action, '=-=---=-=-=---action')
-        print(get_settings().github_astion, '-=-=-=-=-=-fsffsffsfsf')
-        print(get_settings().github_astion.handle_pr_actions, '=-=-=-=-=-get_settings().github_actions.handle_pr_actions')
-        if action in get_settings().github_astion.handle_pr_actions:
+        print(get_settings().github_action, '-=-=-=-=-=-fsffsffsfsf')
+        print(get_settings().github_action.handle_pr_actions, '=-=-=-=-=-get_settings().github_actions.handle_pr_actions')
+        if action in get_settings().github_action.handle_pr_actions:
             print('============================================')
             pr_url = event_payload.get("pull_request", {}).get("url")
             logging.info(f"Performing review because of event={GITHUB_EVENT_NAME} and action={action}")
-            for command in get_settings().github_astion.pr_commands:
+            for command in get_settings().github_action.pr_commands:
                 print(command, '=-=-=-=-=-=-=-command')
                 split_command = command.split(" ")
                 command = split_command[0]
