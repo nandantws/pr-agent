@@ -33,7 +33,6 @@ def get_settings():
         return context["settings"]
     except Exception:
         print(global_settings, 'posssssssssssssssssssssssssssssssssssss')
-        print(global_settings.github_action)
         return global_settings
 
 
