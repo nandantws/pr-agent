@@ -78,12 +78,9 @@ async def run_action():
         print('kkkkkkkkkkkkkkkkkkkkkkkkkkkk')
         print(get_settings().data)
         print(type(get_settings().data))
-        print(get_settings().data.handle_pr_actions)
-        print(get_settings().data['handle_pr_actions'])
-        print('----------------------------------------')
-        print(get_settings().activate_window.arr)
-        print(get_settings().activate_window.boo)
-        print('----------------------------------------')
+        asd = get_settings().data.handle_pr_actions
+        print(type(asd), asd)
+        print(action, '=-=---=-=-=---action')
         if action in get_settings().data.handle_pr_actions:
             print('============================================')
             pr_url = event_payload.get("pull_request", {}).get("url")
