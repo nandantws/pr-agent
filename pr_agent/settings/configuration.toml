@@ -59,7 +59,7 @@ deployment_type = "user"
 user_token = ""  # A GitHub personal access token with 'repo' scope.
 ratelimit_retries = 5
 
-[github_action]
+[data_github]
 # these toggles allows running the github app from custom deployments
 bot_user = "github-actions[bot]"
 override_deployment_type = true
