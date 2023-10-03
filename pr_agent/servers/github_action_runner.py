@@ -51,6 +51,7 @@ async def run_action():
 
     # Handle pull request event
     if GITHUB_EVENT_NAME == "pull_request":
+        print('===================================================ddddddddd==============================='')
         action = event_payload.get("action")
         if action in ["opened", "reopened"]:
             pr_url = event_payload.get("pull_request", {}).get("url")
@@ -67,6 +68,7 @@ async def run_action():
 
     # Handle issue comment event
     elif GITHUB_EVENT_NAME == "issue_comment":
+        print('===================================================ffffffffffff==============================')
         action = event_payload.get("action")
         if action in ["created", "edited"]:
             comment_body = event_payload.get("comment", {}).get("body")
