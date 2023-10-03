@@ -51,7 +51,7 @@ async def run_action():
 
     # Handle pull request event
     if GITHUB_EVENT_NAME == "pull_request":
-        print('===================================================ddddddddd==============================='')
+        print('===================================================ddddddddd===============================')
         action = event_payload.get("action")
         if action in ["opened", "reopened"]:
             pr_url = event_payload.get("pull_request", {}).get("url")
