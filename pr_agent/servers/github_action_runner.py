@@ -12,9 +12,11 @@ from pr_agent.git_providers import get_git_provider
 from pr_agent.tools.pr_code_suggestions import PRCodeSuggestions
 from pr_agent.tools.pr_description import PRDescription
 from pr_agent.tools.pr_reviewer import PRReviewer
+from pr_agent.algo.utils import update_settings_from_args
 
 
 async def run_action():
+    agent = PRAgent()
     # Get environment variables
     GITHUB_EVENT_NAME = os.environ.get('GITHUB_EVENT_NAME')
     GITHUB_EVENT_PATH = os.environ.get('GITHUB_EVENT_PATH')
@@ -61,6 +63,7 @@ async def run_action():
         This function checks if the request is duplicate and if so - ignores it.
         """
         request_hash = hash(str(body))
+        print('request_hash: ', request_hash)
         logging.info(f"request_hash: {request_hash}")
         request_time = time.monotonic()
         ttl = get_settings().github_app.duplicate_requests_cache_ttl  # in seconds
@@ -78,26 +81,40 @@ async def run_action():
         return {}
 
     # Handle pull request event
+    # if GITHUB_EVENT_NAME == "pull_request":
+    #     print('===================================================ddddddddd===============================')
+    #     action = event_payload.get("action")
+    #     print('action: ', action)
+    #     if action in ["opened", "reopened"]:
+    #         pr_url = event_payload.get("pull_request", {}).get("url")
+    #         print('pr_url: ', pr_url)
+    #         if pr_url:
+    #             auto_review = os.environ.get('github_action.auto_review', None)
+    #             print('auto_review: ', auto_review)
+    #             if auto_review is None or (isinstance(auto_review, str) and auto_review.lower() == 'true'):
+    #                 await PRReviewer(pr_url).run()
+    #             auto_describe = os.environ.get('github_action.auto_describe', None)
+    #             print('auto_describe: ', auto_describe)
+    #             if isinstance(auto_describe, str) and auto_describe.lower() == 'true':
+    #                 await PRDescription(pr_url).run()
+    #             auto_improve = os.environ.get('github_action.auto_improve', None)
+    #             print('auto_improve: ', auto_improve)
+    #             if isinstance(auto_improve, str) and auto_improve.lower() == 'true':
+    #                 await PRCodeSuggestions(pr_url).run()
+
     if GITHUB_EVENT_NAME == "pull_request":
-        print('===================================================ddddddddd===============================')
         action = event_payload.get("action")
-        print('action: ', action)
-        if action in ["opened", "reopened"]:
+        if action in get_settings().github_workflow.handle_pr_actions:
             pr_url = event_payload.get("pull_request", {}).get("url")
-            print('pr_url: ', pr_url)
-            if pr_url:
-                auto_review = os.environ.get('github_action.auto_review', None)
-                print('auto_review: ', auto_review)
-                if auto_review is None or (isinstance(auto_review, str) and auto_review.lower() == 'true'):
-                    await PRReviewer(pr_url).run()
-                auto_describe = os.environ.get('github_action.auto_describe', None)
-                print('auto_describe: ', auto_describe)
-                if isinstance(auto_describe, str) and auto_describe.lower() == 'true':
-                    await PRDescription(pr_url).run()
-                auto_improve = os.environ.get('github_action.auto_improve', None)
-                print('auto_improve: ', auto_improve)
-                if isinstance(auto_improve, str) and auto_improve.lower() == 'true':
-                    await PRCodeSuggestions(pr_url).run()
+            logging.info(f"Performing review because of event={GITHUB_EVENT_NAME} and action={action}")
+            for command in get_settings().github_workflow.pr_commands:
+                split_command = command.split(" ")
+                command = split_command[0]
+                args = split_command[1:]
+                other_args = update_settings_from_args(args)
+                new_command = ' '.join([command] + other_args)
+                logging.info(f"Performing command: {new_command}")
+                await agent.handle_request(pr_url, new_command)
 
     # Handle issue comment event
     elif GITHUB_EVENT_NAME == "issue_comment":
