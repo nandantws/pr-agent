@@ -1,6 +1,10 @@
 import asyncio
 import json
 import os
+import logging
+import time
+from typing import Any, Dict
+
 
 from pr_agent.agent.pr_agent import PRAgent
 from pr_agent.config_loader import get_settings
@@ -48,6 +52,30 @@ async def run_action():
     except json.decoder.JSONDecodeError as e:
         print(f"Failed to parse JSON: {e}")
         return
+    
+    _duplicate_requests_cache = {}
+    
+    def _is_duplicate_request(body: Dict[str, Any]) -> bool:
+        """
+        In some deployments its possible to get duplicate requests if the handling is long,
+        This function checks if the request is duplicate and if so - ignores it.
+        """
+        request_hash = hash(str(body))
+        logging.info(f"request_hash: {request_hash}")
+        request_time = time.monotonic()
+        ttl = get_settings().github_app.duplicate_requests_cache_ttl  # in seconds
+        to_delete = [key for key, key_time in _duplicate_requests_cache.items() if request_time - key_time > ttl]
+        for key in to_delete:
+            del _duplicate_requests_cache[key]
+        is_duplicate = request_hash in _duplicate_requests_cache
+        _duplicate_requests_cache[request_hash] = request_time
+        if is_duplicate:
+            logging.info(f"Ignoring duplicate request {request_hash}")
+        return is_duplicate
+
+    
+    if get_settings().github_app.duplicate_requests_cache and _is_duplicate_request(body):
+        return {}
 
     # Handle pull request event
     if GITHUB_EVENT_NAME == "pull_request":
