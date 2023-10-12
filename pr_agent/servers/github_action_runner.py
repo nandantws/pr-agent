@@ -77,8 +77,10 @@ async def run_action():
         return is_duplicate
 
     
+    print('get_settings().github_app.duplicate_requests_cache: ', get_settings().github_app.duplicate_requests_cache)
     if get_settings().github_app.duplicate_requests_cache and _is_duplicate_request(body):
         return {}
+    print('_is_duplicate_request(body): ', _is_duplicate_request(body))
 
     # Handle pull request event
     # if GITHUB_EVENT_NAME == "pull_request":
@@ -104,10 +106,10 @@ async def run_action():
 
     if GITHUB_EVENT_NAME == "pull_request":
         action = event_payload.get("action")
-        if action in get_settings().github_workflow.handle_pr_actions:
+        if action in get_settings().github_action.handle_pr_actions:
             pr_url = event_payload.get("pull_request", {}).get("url")
             logging.info(f"Performing review because of event={GITHUB_EVENT_NAME} and action={action}")
-            for command in get_settings().github_workflow.pr_commands:
+            for command in get_settings().github_action.pr_commands:
                 split_command = command.split(" ")
                 command = split_command[0]
                 args = split_command[1:]
