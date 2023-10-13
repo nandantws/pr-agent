@@ -10,6 +10,7 @@ use_repo_settings_file=true
 ai_timeout=180
 max_description_tokens = 500
 max_commits_tokens = 500
+patch_extra_lines = 3
 secret_provider="google_cloud_storage"
 cli_mode=false
 
@@ -46,6 +47,10 @@ num_code_suggestions_per_chunk=8
 rank_extended_suggestions = true
 max_number_of_calls = 5
 final_clip_factor = 0.9
+
+[pr_add_docs] # /add_docs #
+extra_instructions = ""
+docs_style = "Sphinx Style" # "Google Style with Args, Returns, Attributes...etc", "Numpy Style", "Sphinx Style", "PEP257", "reStructuredText"
 
 [pr_update_changelog] # /update_changelog #
 push_changelog_changes=false

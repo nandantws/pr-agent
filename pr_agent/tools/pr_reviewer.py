@@ -209,6 +209,22 @@ class PRReviewer:
                         link = self.git_provider.generate_link_to_relevant_line_number(suggestion)
                         if link:
                             suggestion['relevant line'] = f"[{suggestion['relevant line']}]({link})"
+                    else:
+                        pass
+                        # try:
+                        #     relevant_file = suggestion['relevant file'].strip('`').strip("'")
+                        #     relevant_line_str = suggestion['relevant line']
+                        #     if not relevant_line_str:
+                        #         return ""
+                        #
+                        #     position, absolute_position = find_line_number_of_relevant_line_in_file(
+                        #         self.git_provider.diff_files, relevant_file, relevant_line_str)
+                        #     if absolute_position != -1:
+                        #         suggestion[
+                        #             'relevant line'] = f"{suggestion['relevant line']} (line {absolute_position})"
+                        # except:
+                        #     pass
+
 
         # Add incremental review section
         if self.incremental.is_incremental:
@@ -225,7 +241,8 @@ class PRReviewer:
         # Add help text if not in CLI mode
         if not get_settings().get("CONFIG.CLI_MODE", False):
             markdown_text += "\n### How to use\n"
-            if user and '[bot]' not in user:
+            bot_user = "[bot]" if get_settings().github_app.override_deployment_type else get_settings().github_app.bot_user
+            if user and bot_user not in user:
                 markdown_text += bot_help_text(user)
             else:
                 markdown_text += actions_help_text

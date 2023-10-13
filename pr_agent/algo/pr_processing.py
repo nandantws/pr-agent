@@ -11,6 +11,7 @@ from github import RateLimitExceededException
 from pr_agent.algo import MAX_TOKENS
 from pr_agent.algo.git_patch_processing import convert_to_hunks_with_lines_numbers, extend_patch, handle_patch_deletions
 from pr_agent.algo.language_handler import sort_files_by_main_languages
+from pr_agent.algo.file_filter import filter_ignored
 from pr_agent.algo.token_handler import TokenHandler, get_token_encoder
 from pr_agent.config_loader import get_settings
 from pr_agent.git_providers.git_provider import FilePatchInfo, GitProvider
@@ -21,7 +22,6 @@ MORE_MODIFIED_FILES_ = "More modified files:\n"
 
 OUTPUT_BUFFER_TOKENS_SOFT_THRESHOLD = 1000
 OUTPUT_BUFFER_TOKENS_HARD_THRESHOLD = 600
-PATCH_EXTRA_LINES = 3
 
 def get_pr_diff(git_provider: GitProvider, token_handler: TokenHandler, model: str,
                 add_line_numbers_to_hunks: bool = False, disable_extra_lines: bool = False) -> str:
@@ -44,8 +44,9 @@ def get_pr_diff(git_provider: GitProvider, token_handler: TokenHandler, model: s
     """
 
     if disable_extra_lines:
-        global PATCH_EXTRA_LINES
         PATCH_EXTRA_LINES = 0
+    else:
+        PATCH_EXTRA_LINES = get_settings().config.patch_extra_lines
 
     try:
         diff_files = git_provider.get_diff_files()
@@ -53,12 +54,14 @@ def get_pr_diff(git_provider: GitProvider, token_handler: TokenHandler, model: s
         logging.error(f"Rate limit exceeded for git provider API. original message {e}")
         raise
 
+    diff_files = filter_ignored(diff_files)
+
     # get pr languages
     pr_languages = sort_files_by_main_languages(git_provider.get_languages(), diff_files)
 
     # generate a standard diff string, with patch extension
-    patches_extended, total_tokens, patches_extended_tokens = pr_generate_extended_diff(pr_languages, token_handler,
-                                                               add_line_numbers_to_hunks)
+    patches_extended, total_tokens, patches_extended_tokens = pr_generate_extended_diff(
+        pr_languages, token_handler, add_line_numbers_to_hunks, patch_extra_lines=PATCH_EXTRA_LINES)
 
     # if we are under the limit, return the full diff
     if total_tokens + OUTPUT_BUFFER_TOKENS_SOFT_THRESHOLD < MAX_TOKENS[model]:
@@ -80,7 +83,8 @@ def get_pr_diff(git_provider: GitProvider, token_handler: TokenHandler, model: s
 
 def pr_generate_extended_diff(pr_languages: list,
                               token_handler: TokenHandler,
-                              add_line_numbers_to_hunks: bool) -> Tuple[list, int, list]:
+                              add_line_numbers_to_hunks: bool,
+                              patch_extra_lines: int = 0) -> Tuple[list, int, list]:
     """
     Generate a standard diff string with patch extension, while counting the number of tokens used and applying diff
     minimization techniques if needed.
@@ -102,7 +106,7 @@ def pr_generate_extended_diff(pr_languages: list,
                 continue
 
             # extend each patch with extra lines of context
-            extended_patch = extend_patch(original_file_content_str, patch, num_lines=PATCH_EXTRA_LINES)
+            extended_patch = extend_patch(original_file_content_str, patch, num_lines=patch_extra_lines)
             full_extended_patch = f"\n\n## {file.filename}\n\n{extended_patch}\n"
 
             if add_line_numbers_to_hunks:
@@ -347,16 +351,16 @@ def get_pr_multi_diffs(git_provider: GitProvider,
     """
     Retrieves the diff files from a Git provider, sorts them by main language, and generates patches for each file.
     The patches are split into multiple groups based on the maximum number of tokens allowed for the given model.
-    
+
     Args:
         git_provider (GitProvider): An object that provides access to Git provider APIs.
         token_handler (TokenHandler): An object that handles tokens in the context of a pull request.
         model (str): The name of the model.
         max_calls (int, optional): The maximum number of calls to retrieve diff files. Defaults to 5.
-    
+
     Returns:
         List[str]: A list of final diff strings, split into multiple groups based on the maximum number of tokens allowed for the given model.
-    
+
     Raises:
         RateLimitExceededException: If the rate limit for the Git provider API is exceeded.
     """
@@ -365,6 +369,8 @@ def get_pr_multi_diffs(git_provider: GitProvider,
     except RateLimitExceededException as e:
         logging.error(f"Rate limit exceeded for git provider API. original message {e}")
         raise
+
+    diff_files = filter_ignored(diff_files)
 
     # Sort files by main language
     pr_languages = sort_files_by_main_languages(git_provider.get_languages(), diff_files)
