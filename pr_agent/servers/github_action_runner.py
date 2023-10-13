@@ -57,35 +57,35 @@ async def run_action():
     
     _duplicate_requests_cache = {}
 
-    # if get_settings().github_app.override_deployment_type:
-    #     # Override the deployment type to app
-    #     get_settings().set("GITHUB.DEPLOYMENT_TYPE", "app")
+    if get_settings().github_app.override_deployment_type:
+        # Override the deployment type to app
+        get_settings().set("GITHUB.DEPLOYMENT_TYPE", "app")
     
-    # def _is_duplicate_request(body: Dict[str, Any]) -> bool:
-    #     print('================================================')
-    #     """
-    #     In some deployments its possible to get duplicate requests if the handling is long,
-    #     This function checks if the request is duplicate and if so - ignores it.
-    #     """
-    #     request_hash = hash(str(body))
-    #     print('request_hash: ', request_hash)
-    #     logging.info(f"request_hash: {request_hash}")
-    #     request_time = time.monotonic()
-    #     ttl = get_settings().github_app.duplicate_requests_cache_ttl  # in seconds
-    #     to_delete = [key for key, key_time in _duplicate_requests_cache.items() if request_time - key_time > ttl]
-    #     for key in to_delete:
-    #         del _duplicate_requests_cache[key]
-    #     is_duplicate = request_hash in _duplicate_requests_cache
-    #     _duplicate_requests_cache[request_hash] = request_time
-    #     if is_duplicate:
-    #         logging.info(f"Ignoring duplicate request {request_hash}")
-    #     return is_duplicate
+    def _is_duplicate_request(body: Dict[str, Any]) -> bool:
+        print('================================================')
+        """
+        In some deployments its possible to get duplicate requests if the handling is long,
+        This function checks if the request is duplicate and if so - ignores it.
+        """
+        request_hash = hash(str(body))
+        print('request_hash: ', request_hash)
+        logging.info(f"request_hash: {request_hash}")
+        request_time = time.monotonic()
+        ttl = get_settings().github_app.duplicate_requests_cache_ttl  # in seconds
+        to_delete = [key for key, key_time in _duplicate_requests_cache.items() if request_time - key_time > ttl]
+        for key in to_delete:
+            del _duplicate_requests_cache[key]
+        is_duplicate = request_hash in _duplicate_requests_cache
+        _duplicate_requests_cache[request_hash] = request_time
+        if is_duplicate:
+            logging.info(f"Ignoring duplicate request {request_hash}")
+        return is_duplicate
 
     
-    # print('get_settings().github_app.duplicate_requests_cache: ', get_settings().github_app.duplicate_requests_cache)
-    # if get_settings().github_app.duplicate_requests_cache and _is_duplicate_request(body):
-    #     return {}
-    # print('_is_duplicate_request(body): ', _is_duplicate_request(body))
+    print('get_settings().github_app.duplicate_requests_cache: ', get_settings().github_app.duplicate_requests_cache)
+    if get_settings().github_app.duplicate_requests_cache and _is_duplicate_request(event_payload):
+        return {}
+    print('_is_duplicate_request(body): ', _is_duplicate_request(event_payload))
 
     # Handle pull request event
     # if GITHUB_EVENT_NAME == "pull_request":
@@ -112,10 +112,10 @@ async def run_action():
     if GITHUB_EVENT_NAME == "pull_request":
         print(event_payload, '=-=-=-=-=-=-=-=-=-=-=----')
         action = event_payload.get("action")
-        if action in get_settings().github_action.handle_pr_actions:
+        if action in get_settings().github_app.handle_pr_actions:
             pr_url = event_payload.get("pull_request", {}).get("url")
             logging.info(f"Performing review because of event={GITHUB_EVENT_NAME} and action={action}")
-            for command in get_settings().github_action.pr_commands:
+            for command in get_settings().github_app.pr_commands:
                 split_command = command.split(" ")
                 command = split_command[0]
                 args = split_command[1:]
