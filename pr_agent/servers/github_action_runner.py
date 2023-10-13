@@ -57,9 +57,9 @@ async def run_action():
     
     _duplicate_requests_cache = {}
 
-    if get_settings().github_app.override_deployment_type:
-        # Override the deployment type to app
-        get_settings().set("GITHUB.DEPLOYMENT_TYPE", "app")
+    # if get_settings().github_app.override_deployment_type:
+    #     # Override the deployment type to app
+    #     get_settings().set("GITHUB.DEPLOYMENT_TYPE", "app")
     
     def _is_duplicate_request(body: Dict[str, Any]) -> bool:
         print('================================================')
